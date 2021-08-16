@@ -1,0 +1,7 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
+from toolbox.weather import weather
+
+def test_functions:
+    len(test_functions) == len(functions)
