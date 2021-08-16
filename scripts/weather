@@ -1,0 +1,45 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
+
+import sys
+import urllib.parse
+import requests
+
+BASE_URL = "https://www.metaweather.com/"
+
+
+def search_city(query):
+    url_str = f"{BASE_URL}api/location/search/?query={query.lower()}"
+    response_city = requests.get(url_str).json()
+    if response_city != []:
+        return response_city[0]
+    return None
+
+def weather_forecast(woeid):
+
+    url_woeid = f"{BASE_URL}api/location/{woeid}"
+    response_woeid = requests.get(url_woeid).json()
+
+    for i in response_woeid["consolidated_weather"]:
+        print(i["applicable_date"], i["weather_state_name"],
+              round(i["the_temp"], 1), "°C")
+
+    return response_woeid['consolidated_weather']
+
+
+def main():
+    '''Ask user for a city and display weather forecast'''
+    query = input("City?\n> ")
+    city = search_city(query)
+    woeid = city["woeid"]
+    weather_forecast(woeid)
+
+
+if __name__ == '__main__':
+    try:
+        while True:
+            main()
+    except KeyboardInterrupt:
+        print('\nGoodbye!')
+        sys.exit(0)
